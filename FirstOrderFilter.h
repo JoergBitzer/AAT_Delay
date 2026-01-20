@@ -35,7 +35,7 @@ public:
 	 * @brief Construct a new First Order Filter object
 	 * 
 	 */
-	FirstOrderFilter() :m_fs(44100.0), m_cutoff(1000.0), m_gain_db(0.0),
+	FirstOrderFilter() :m_cutoff(1000.0), m_fs(44100.0), m_gain_db(0.0),
 		m_design(FilterDesign::none) {
 		computeCoeffs();
 		reset();
@@ -114,7 +114,7 @@ public:
 private:
 	double m_b0, m_b1, m_a1;
 	double m_state;
-	double m_fs, m_cutoff;
+	double m_cutoff, m_fs;
 	double m_gain_db;
 	FilterDesign m_design;
 	void computeCoeffs() // music dsp

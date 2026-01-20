@@ -12,6 +12,7 @@
 */
 #pragma once
 #include <vector>
+#include <cmath>
 
 namespace jade
 {
@@ -32,7 +33,7 @@ public:
     };
     void prepareParameter(std::atomic<float>* parampointer) {m_param = parampointer;};
     T update(){
-        if (*m_param != m_ParamOld)
+        if (!isEqual(*m_param, m_ParamOld))
         {
             m_ParamOld = *m_param;
             m_transformedParam =  m_transformParamFunc();
@@ -40,7 +41,7 @@ public:
         return static_cast<T> (m_transformedParam);
     };
     bool updateWithNotification(T& param){
-        if (*m_param != m_ParamOld)
+        if (!isEqual(*m_param, m_ParamOld))
         {
             m_ParamOld = *m_param;
             m_transformedParam =  m_transformParamFunc();
@@ -85,6 +86,10 @@ private:
     T m_transformedParam = std::numeric_limits<T>::min(); //smallest possible number, will change in the first block
 
     std::function<T(void)> m_transformParamFunc;
+
+    bool isEqual(float a, float b, float epsilon = 1e-6f) {
+        return std::fabs(a - b) < epsilon;
+    }
 
 };
 }

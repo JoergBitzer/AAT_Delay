@@ -56,14 +56,14 @@ void jade::BasicDelayEffect::setDelay(size_t delay, size_t chn)
 
 int jade::BasicDelayEffect::processSamples(juce::AudioBuffer<float> &data)
 {
-    size_t nrofchns = data.getNumChannels();
-    size_t nrofsamples = data.getNumSamples();
+    size_t nrofchns = static_cast<size_t>(data.getNumChannels());
+    size_t nrofsamples = static_cast<size_t>(data.getNumSamples());
 
     auto dataPtr = data.getArrayOfWritePointers();
     auto bufferPtr = m_buffer.getArrayOfWritePointers();
-    for (auto kk = 0; kk < nrofsamples; ++kk)
+    for (size_t kk = 0; kk < nrofsamples; ++kk)
     {
-        for (auto cc = 0; cc < nrofchns; ++cc)
+        for (size_t cc = 0; cc < nrofchns; ++cc)
         {
             float in;
             if (cc == 0 && nrofchns == 2)
@@ -137,11 +137,11 @@ int jade::BasicDelayEffect::processSamples(juce::AudioBuffer<float> &data)
                         interp_x0 += static_cast<int> (m_maxdelay);
                     
                     int interp_x2 = interp_x1 + 1;
-                    if (interp_x2 >= m_maxdelay)
+                    if (interp_x2 >= static_cast<int> (m_maxdelay))
                         interp_x2 -= static_cast<int> (m_maxdelay);
 
                     int interp_x3 = interp_x1 + 2;
-                    if (interp_x3 >= m_maxdelay)
+                    if (interp_x3 >= static_cast<int> (m_maxdelay))
                         interp_x3 -= static_cast<int> (m_maxdelay);
 
 //                    double L1 = ()/((0-1)*(0-2)*(0-3)) // just for the history to explain the 6.0 and 2.0
@@ -219,7 +219,7 @@ void jade::BasicDelayEffect::changeBufferSize()
     m_lowpass.resize(m_nrOfChns);
     m_highpass.resize(m_nrOfChns);
 
-    for (auto cc = 0; cc < m_nrOfChns; ++cc)
+    for (size_t cc = 0; cc < m_nrOfChns; ++cc)
     {
         m_delays[cc] = 0.0;
         m_switchCounter[cc] = 0;
